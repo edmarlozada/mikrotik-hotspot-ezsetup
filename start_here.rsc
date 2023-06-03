@@ -12,7 +12,7 @@
 # - Port 1 => WAN
 # - Port 2 => PC/Laptop Winbox
 # How to install:
-# - Open file "start_here.txt"
+# - Open file "start_here.rsc"
 # - Provide the information needed
 # - Save this file after editing
 # - Drag and Drop all files to winbox terminal
@@ -96,4 +96,4 @@
 }
 
 #:console clear
-#/file remove "start_here.txt"
+#/file remove "start_here.rsc"

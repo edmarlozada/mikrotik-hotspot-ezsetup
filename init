@@ -1,5 +1,5 @@
 :put "Initializing Mikrotik..."
-:import "start_here.txt"
+:import "start_here.rsc"
 
 # === Installer === #
 { :local eName  "Installer"
@@ -30,11 +30,11 @@
     }
   }
   local iOk true
-  :if (\$1=\"mikrotik_basic\")    do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/1_config_basic.txt\" }
-  :if (\$1=\"mikrotik_advance\")  do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/2_config_advance.txt\" }
-  :if (\$1=\"hotspot_interface\") do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/3_hotspot_interface.txt\" }
-  :if (\$1=\"hotspot_advance\")   do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/4_hotspot_advance.txt\" }
-  :if (\$1=\"hotspot_server\")    do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/5_hotspot_server.txt\" }
+  :if (\$1=\"mikrotik_basic\")    do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/1_config_basic.rsc\" }
+  :if (\$1=\"mikrotik_advance\")  do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/2_config_advance.rsc\" }
+  :if (\$1=\"hotspot_interface\") do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/3_hotspot_interface.rsc\" }
+  :if (\$1=\"hotspot_advance\")   do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/4_hotspot_advance.rsc\" }
+  :if (\$1=\"hotspot_server\")    do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/5_hotspot_server.rsc\" }
   :if (\$iOk) do={ put \"ERROR: invalid argument!\" }
 }
 
