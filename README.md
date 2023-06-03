@@ -1,5 +1,5 @@
 # mikrotik-hotspot-autoconfig
-Mikrotik Script to Automate Setup/Config your Mikrotik with just simple commands for Beginners.
+Mikrotik Script Automate Setup/Config your Mikrotik with just simple commands for Beginners.
 - ":import init" (Initializing Mikrotik)
 - "$install mikrotik_basic"    (Miktrotik Config Basic)
 - "$install mikrotik_advance"  (Miktrotik Config Advance)
