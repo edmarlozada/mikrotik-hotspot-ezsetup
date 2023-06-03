@@ -1,0 +1,49 @@
+:put "Initializing Mikrotik..."
+:import "start_here.txt"
+
+# === Installer === #
+{ :local eName  "Installer"
+  :local eEvent "# $eName #\r
+# ------------------------------\r
+# Installer Startup\r
+# by: Chloe Renae & Edmar Lozada\r
+# ------------------------------\r
+:log info \"($eName) begin\"\r
+
+:global install do={
+  :local aInstall do={
+    :put \"Installing...\"
+    :foreach iFile in=\$1 do={
+      :if ([/file find name=\"\$iFile\"]=\"\") do={ :put \"ERROR: \$iFile...\"
+      } else={
+        :put \"Processing (\$iFile)...\"
+        :import \"\$iFile\"
+      }
+    }
+  }
+  :local iInstall do={
+    :if ([/file find name=\"\$1\"]=\"\") do={ :put \"ERROR: \$1...\"
+    } else={
+      :put \"Processing (\$1)...\"
+      :import \"\$1\"
+      /file remove \"\$1\"
+    }
+  }
+  local iOk true
+  :if (\$1=\"mikrotik_basic\")    do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/1_config_basic.txt\" }
+  :if (\$1=\"mikrotik_advance\")  do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/2_config_advance.txt\" }
+  :if (\$1=\"hotspot_interface\") do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/3_hotspot_interface.txt\" }
+  :if (\$1=\"hotspot_advance\")   do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/4_hotspot_advance.txt\" }
+  :if (\$1=\"hotspot_server\")    do={ :set \$iOk false; \$iInstall \"install/1_mikrotik_config/5_hotspot_server.txt\" }
+  :if (\$iOk) do={ put \"ERROR: invalid argument!\" }
+}
+
+:log info \"($eName) end\"\r
+# ------------------------------\r\n"
+:if ([/system scheduler find name=$eName]="") do={ /system scheduler add name=$eName }
+/system scheduler  set [find name=$eName] on-event=$eEvent \
+ disabled=no start-time=startup interval=0s comment="installer_scheduler: ( Startup )"
+}
+
+[:parse [/system scheduler get [find name=Installer] on-event]]
+/file remove init
