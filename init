@@ -47,3 +47,5 @@
 
 [:parse [/system scheduler get [find name=Installer] on-event]]
 /file remove init
+/file remove README.md
+/file remove LICENSE
