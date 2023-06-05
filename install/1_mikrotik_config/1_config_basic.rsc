@@ -209,8 +209,7 @@ foreach x in=[/queue simple find target=$BridgeWAN] do={ /queue simple remove $x
   # default settings
   /interface wireless set [find default-name=wlan1] \
     frequency-mode=regulatory-domain \
-    tx-power-mode=default \
-    country=philippines
+    tx-power-mode=default
   :put "(Config PC) /interface wireless => name:[wlan1] ssid:[$($cfg->"WiFiSSID")]"
 }
 
