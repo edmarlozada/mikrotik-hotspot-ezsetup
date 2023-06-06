@@ -1,36 +1,41 @@
-# mikrotik-hotspot-ezsetup
-Easy mikrotik hotspot setup/config script for your mikrotik with just simple commands for beginners. From mikrotik basic config to hospot setup.
-- ":import init" (Initializing Mikrotik)
-- "$install mikrotik_basic"    (Miktrotik Config Basic)
-- "$install mikrotik_advance"  (Miktrotik Config Advance)
-- "$install hotspot_interface" (Miktrotik Config HotSpot Interface)
-- "$install hotspot_advance"   (Miktrotik Config HotSpot Advance)
-- "$install hotspot_server"    (Miktrotik Config HotSpot Server)
+# mikrotik-hotspot-ezsetup v2.0
+Beginners easy Hotspot setup/config script for your mikrotik with just simple commands. From mikrotik basic config to hospot setup.
 
-IMPORTANT NOTE!!!
-- Port 1 => WAN
-- Port 2 => PC/Laptop Winbox
+Before you begin:
+- Port 1 ( WAN )
+- Port 2 ( PC/Laptop Winbox )
+- reset mikrotik w/o default config
 
 How to install:
-- Open file "start_here.txt"
-- Provide the information needed
-- Save this file after editing
-- Drag and Drop all files to winbox terminal
-- Execute the ff. on winbox terminal individually:
-  - import init
-  - $install mikrotik_basic
-  - $install mikrotik_advance
-  - $install hotspot_interface
+- Edit file "0_start_here.rsc".
+- Provide the needed information.
+- Save this file after editing.
+- Drag and Drop all files to winbox terminal.
+- Execute each command on winbox terminal:
+  - :import hotspot
+  - $install config_wan
+  - $install config_advance
+  - $install hotspot_router
   - $install hotspot_advance
   - $install hotspot_server
+  - $install hotspot_ether2
+  - $install end
+- or Install all in 3 command:
+  - :import hotspot
+  - $install hotspot
+  - $install end
 
-Needed Variable:
-- ISPName    -> Internet Service Provider [Globe/Smart/PLDT/Starlink/etc].
-- IPSubNet   -> IP subnet of LAN "192.168.x.0" & Hotspot "10.0.x.0".
-- HSFolder   -> hotspot folder path: hex="flash/hotspot" haplite="hotspot".
-- isTelegram -> enable telegram. 1 if you want to enable telegram.
-- TGBotToken -> Bot API Token Telebot.
-- TGrpChatID -> Group Chat ID Login.
+Provide the needed information:
+- ISPName    [Globe/Smart/PLDT/Starlink/etc]
+- IPSubNet   (IP subnet of LAN "192.168.x.0" & Hotspot "10.0.x.0")
+- WinboxUser (winbox username)
+- WinboxPass (winbox password)
+- WiFiSSID   (mikrotik wifi SSID if available)
+- WiFiPass   (mikrotik wifi password if available)
+- HSFilePath (hotspot folder path: hex="flash/hotspot" haplite="hotspot")
+- isTelegram (enable telegram. 1 if you want to enable telegram)
+- TGBotToken (Bot API Token)
+- TGrpChatID (Group Chat ID)
 
 Author:
 - Chloe Renae & Edmar Lozada
@@ -38,3 +43,6 @@ Author:
 
 Facebook Contact:
 - https://www.facebook.com/chloe.renae.9
+
+Facebook JuanFi Group:
+- https://www.facebook.com/groups/1172413279934139

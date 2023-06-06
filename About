@@ -1,0 +1,20 @@
+mikrotik-hotspot-ezsetup v2.0
+Beginners easy Hotspot setup/config script for your mikrotik with just simple commands. From mikrotik basic config to hospot setup.
+
+How to install:
+- Edit file "0_start_here.rsc".
+- Provide the needed information.
+- Save this file after editing.
+- Drag and Drop all files to winbox terminal.
+- Execute each command on winbox terminal:
+  - :import hotspot
+  - $install hotspot
+  - $install end
+
+dawlim here:
+https://github.com/edmarlozada/mikrotik-hotspot-ezsetup
+
+Write us comment if error occurs,
+or if script is working well!
+
+mikrotik, mikrotik-router, mikrotik-hotspot, mikrotik-script, mikrotik-routeros-script
