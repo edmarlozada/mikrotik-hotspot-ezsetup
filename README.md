@@ -1,4 +1,4 @@
-# mikrotik-hotspot-autoconfig
+# mikrotik-hotspot-ezsetup
 Easy mikrotik hotspot setup/config script for your mikrotik with just simple commands for beginners. From mikrotik basic config to hospot setup.
 - ":import init" (Initializing Mikrotik)
 - "$install mikrotik_basic"    (Miktrotik Config Basic)
