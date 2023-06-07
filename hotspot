@@ -26,25 +26,24 @@
     }
   };
   :local aHotspot {\\
-    \"hotspot_v2/1_config_wan.rsc\";\\
-    \"hotspot_v2/2_config_advance.rsc\";\\
-    \"hotspot_v2/3_hotspot_router.rsc\";\\
-    \"hotspot_v2/4_hotspot_advance.rsc\";\\
-    \"hotspot_v2/5_hotspot_server.rsc\";\\
-    \"hotspot_v2/6_hotspot_ether2.rsc\"
+    \"hotspot_rsc/1_config_wan.rsc\";\\
+    \"hotspot_rsc/2_config_advance.rsc\";\\
+    \"hotspot_rsc/3_hotspot_router.rsc\";\\
+    \"hotspot_rsc/4_hotspot_advance.rsc\";\\
+    \"hotspot_rsc/5_hotspot_server.rsc\";\\
+    \"hotspot_rsc/6_hotspot_ether2.rsc\"
   };
   local iOk true;
   :if (\$1=\"hotspot\")         do={ :set \$iOk false; \$aInstall \$aHotspot };
-  :if (\$1=\"config_wan\")      do={ :set \$iOk false; \$iInstall \"hotspot_v2/1_config_wan.rsc\" };
-  :if (\$1=\"config_advance\")  do={ :set \$iOk false; \$iInstall \"hotspot_v2/2_config_advance.rsc\" };
-  :if (\$1=\"hotspot_router\")  do={ :set \$iOk false; \$iInstall \"hotspot_v2/3_hotspot_router.rsc\" };
-  :if (\$1=\"hotspot_advance\") do={ :set \$iOk false; \$iInstall \"hotspot_v2/4_hotspot_advance.rsc\" };
-  :if (\$1=\"hotspot_server\")  do={ :set \$iOk false; \$iInstall \"hotspot_v2/5_hotspot_server.rsc\" };
-  :if (\$1=\"hotspot_ether2\")  do={ :set \$iOk false; \$iInstall \"hotspot_v2/6_hotspot_ether2.rsc\" };
+  :if (\$1=\"config_wan\")      do={ :set \$iOk false; \$iInstall \"hotspot_rsc/1_config_wan.rsc\" };
+  :if (\$1=\"config_advance\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/2_config_advance.rsc\" };
+  :if (\$1=\"hotspot_router\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/3_hotspot_router.rsc\" };
+  :if (\$1=\"hotspot_advance\") do={ :set \$iOk false; \$iInstall \"hotspot_rsc/4_hotspot_advance.rsc\" };
+  :if (\$1=\"hotspot_server\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/5_hotspot_server.rsc\" };
+  :if (\$1=\"hotspot_ether2\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/6_hotspot_ether2.rsc\" };
   :if (\$1=\"end\") do={ :set \$iOk false;
     :do {/file remove \"hotspot\"} on-error={ };
-    :do {/file remove \"hotspot_v2\"} on-error={ };
-    :do {/system script remove [find name=cfg-hotspot]} on-error={ };
+    :do {/file remove \"hotspot_rsc\"} on-error={ };
 
     :do {/file remove \"uninstall\"} on-error={ };
     :do {/file remove \"About\"} on-error={ };
@@ -54,7 +53,7 @@
     :do {/system scheduler remove [find name=Installer]} on-error={ };
     :do {/system script environment remove [find name=install]} on-error={ };
   };
-  :if (\$iOk) do={ put \"(Hotspot) ERROR: invalid argument!\" };
+  :if (\$iOk) do={ :put \"(Hotspot) ERROR: invalid argument!\" };
 }\r
 # ------------------------------\r\n"
 :if ([/system scheduler find name=$eName]="") do={ /system scheduler add name=$eName }
