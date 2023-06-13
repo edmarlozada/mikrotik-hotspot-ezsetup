@@ -18,7 +18,7 @@
 # - Save this file after editing
 # - Drag and Drop all files to winbox terminal
 # - Execute each command on winbox terminal:
-#   :import hotspot
+#   :import installer
 #   $install hotspot
 #   $install end
 # ------------------------------
@@ -28,8 +28,6 @@
 :local ISPName    "XXXX"
 ### IP subnet of LAN "192.168.x.0" & Hotspot "10.0.x.0".
 :local IPSubNet   "4"
-### hotspot folder path: hex="flash/hotspot" haplite="hotspot".
-:local HSFilePath "hotspot"
 
 # === mikrotik winbox username/password ===
 :local WinboxUser "winbox_admin"
@@ -43,14 +41,6 @@
 :local WiFiSSID   "HotSpot.WiFi"
 ### mikrotik wifi password. Edit value below to change.
 :local WiFiPass   "hotspotwifi"
-
-# === telegram (optional if disabled) ===
-### enable telegram. 1 if you want to enable telegram.
-:local isTelegram  0
-### Bot API Token Telebot. Edit value below to change.
-:local TGBotToken "xxxxxxxxxx"
-### Group Chat ID Login. Edit value below to change.
-:local TGrpChatID "xxxxxxxxxx"
 
 
 # ------------------------------
@@ -75,13 +65,9 @@
  \"BridgeWAN\"=\"bridge-wan\";\r
  \"BridgePC\"=\"bridge-pc\";\r
  \"BridgeHS\"=\"bridge-hs\";\r
- \"HSFilePath\"=\"$HSFilePath\";\r
  \"HSUPName\"=\"hsProfile\";\r
  \"HSServer\"=\"hsServer$IPSubNet\";\r
  \"HSQueue\"=\"queue_hsServer$IPSubNet\";\r
- \"isTelegram\"=\"$isTelegram\";\r
- \"TGBotToken\"=\"$TGBotToken\";\r
- \"TGrpChatID\"=\"$TGrpChatID\";\r
  \"QueueType\"=\"sfq-queue\";\r
  \"QueueTurb\"=8;\r
  \"edmarlozada\"=\"edmarlozada\"

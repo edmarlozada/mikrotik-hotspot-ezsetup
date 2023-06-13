@@ -45,7 +45,8 @@
     :do {/file remove \"hotspot\"} on-error={ };
     :do {/file remove \"hotspot_rsc\"} on-error={ };
 
-    :do {/file remove \"uninstall\"} on-error={ };
+    :do {/file remove \"installer\"} on-error={ };
+    :do {/file remove \"source_rsc\"} on-error={ };
     :do {/file remove \"About\"} on-error={ };
     :do {/file remove \"LICENSE\"} on-error={ };
     :do {/file remove \"README.md\"} on-error={ };

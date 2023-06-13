@@ -7,7 +7,7 @@ How to install:
 3. Save this file after editing.
 4. Drag and Drop all files to winbox terminal.
 5. Execute each command on winbox terminal:
-   - :import hotspot
+   - :import installer
    - $install hotspot
    - $install end
 
