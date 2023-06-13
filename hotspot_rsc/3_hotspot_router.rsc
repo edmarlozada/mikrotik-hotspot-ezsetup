@@ -2,7 +2,7 @@
 # Miktrotik HotSpot Router
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "Miktrotik HotSpot Router";
+/{:put "(HotSpot) Miktrotik HotSpot Router";
 
 :local cfg [[:parse [/system script get "cfg-hotspot" source]]]
 
@@ -152,16 +152,16 @@ local WinboxPass ($cfg->"WinboxPass")
     disabled=no
   /interface wireless set [find default-name=wlan1] \
     ssid=($cfg->"WiFiSSID")
-  :put "(Config PC) /interface wireless => name:[wlan1] ssid:[$($cfg->"WiFiSSID")]"
+  :put "(Config) /interface wireless => name:[wlan1] ssid:[$($cfg->"WiFiSSID")]"
 }
 
 # ==============================
 # Interface / Bridge Port
 # ------------------------------
 :foreach iRec in=[/interface ethernet find] do={
-  :if (($iRec!="*1") and ($iRec!="*2")) do={
-    :local iCtr  [pick $iRec 1 [:len $iRec]];
-    :local ether [/interface ethernet get $iRec default-name];
+  local ether [/interface get $iRec default-name];
+  :if (($ether!="ether1") and ($ether!="ether2")) do={
+    :local iCtr  [pick $ether 5 [:len $ether]];
     :local iNote ("$ether ( LAN-HS-$iCtr )");
     /interface set $iRec name=$ether comment=$iNote disabled=no;
     :put "(Config HS) /interface => name=[$ether] comment=[$iNote]";

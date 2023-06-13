@@ -2,7 +2,7 @@
 # Miktrotik Config HotSpot Advance
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "Miktrotik Config HotSpot Advance";
+/{:put "(HotSpot) Miktrotik Config HotSpot Advance";
 
 :local cfg [[:parse [/system script get "cfg-hotspot" source]]];
 

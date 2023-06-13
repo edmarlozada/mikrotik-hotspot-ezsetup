@@ -2,7 +2,7 @@
 # Miktrotik Config HotSpot Server
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "Miktrotik Config HotSpot Server";
+/{:put "(HotSpot) Miktrotik Config HotSpot Server";
 
 :local cfg [[:parse [/system script get "cfg-hotspot" source]]];
 

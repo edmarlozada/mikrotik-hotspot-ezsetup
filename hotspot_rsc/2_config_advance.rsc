@@ -2,7 +2,7 @@
 # Miktrotik Config Advance
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "Miktrotik Config Advance";
+/{:put "(HotSpot) Miktrotik Config Advance";
 
 :local cfg [[:parse [/system script get "cfg-hotspot" source]]];
 
@@ -26,7 +26,7 @@
 
   # Use Users Access List
   /interface wireless set [find default-name=wlan1] default-authentication=yes
-  :put "(Config PC) /interface wireless security-profiles => security-profiles:[$WiFiProf] [aes-ccm] [wpa2-psk]"
+  :put "(Config) /interface wireless security-profiles => security-profiles:[$WiFiProf] [aes-ccm] [wpa2-psk]"
 }
 
 # ==============================
@@ -38,7 +38,7 @@
 # /ip service set www port=81
 # /ip service set www disabled=yes
 /ip service set telnet disabled=yes
-:put "(Config PC) /ip service => telnet:[disabled]"
+:put "(Config) /ip service => telnet:[disabled]"
 
 # ==============================
 # Mikrotik Identity

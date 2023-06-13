@@ -2,16 +2,14 @@
 # Miktrotik HotSpot Router (ether2)
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "Miktrotik HotSpot Router (ether2)";
+/{:put "(HotSpot) Miktrotik HotSpot Router (ether2)";
 
 :local cfg [[:parse [/system script get "cfg-hotspot" source]]]
 
 :local BridgeHS ($cfg->"BridgeHS");
-:local iRec "*2";
-:local iCtr  [pick $iRec 1 [:len $iRec]];
-:local ether [/interface ethernet get $iRec default-name];
-:local iNote ("$ether ( LAN-HS-$iCtr )");
-/interface set $iRec name=$ether comment=$iNote disabled=no;
+:local ether ether2;
+:local iNote ("$ether ( LAN-HS-2 )");
+/interface set [find default-name=$ether] name=$ether comment=$iNote disabled=no;
 :put "(Config HS) /interface => name=[$ether] comment=[$iNote]";
 :if ([/interface bridge port find interface=$ether]="") do={
       /interface bridge port  add interface=$ether  bridge=$BridgeHS };

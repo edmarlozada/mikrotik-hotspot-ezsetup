@@ -2,7 +2,7 @@
 # Miktrotik Config WAN
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "Miktrotik Config WAN";
+/{:put "(HotSpot) Miktrotik Config WAN";
 
 :local cfg [[:parse [/system script get "cfg-hotspot" source]]];
 
@@ -32,7 +32,7 @@
 :if ([/interface list member find interface=$BridgeWAN]="") do={
       /interface list member  add interface=$BridgeWAN  list=WAN }
 /interface list member  set [find interface=$BridgeWAN] list=WAN comment=$BridgeWANNote
-:put "(Config PC) /interface list member => list:[WAN] interface:[$BridgeWAN]"
+:put "(Config WAN) /interface list member => list:[WAN] interface:[$BridgeWAN]"
 
 :if ([/interface find default-name=ether1]!="") do={
       /interface set [find default-name=ether1] name=ether1 comment=$eth1ISPName disabled=no
