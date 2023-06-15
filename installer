@@ -42,7 +42,6 @@
   :if (\$1=\"hotspot_server\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/5_hotspot_server.rsc\" };
   :if (\$1=\"hotspot_ether2\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/6_hotspot_ether2.rsc\" };
   :if (\$1=\"end\") do={ :set \$iOk false;
-    :do {/file remove \"hotspot\"} on-error={ };
     :do {/file remove \"hotspot_rsc\"} on-error={ };
 
     :do {/file remove \"installer\"} on-error={ };
