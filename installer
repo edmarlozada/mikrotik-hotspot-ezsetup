@@ -1,67 +1,80 @@
-:put "(Hotspot) Loading..."
+# ==============================
+# by: Chloe Renae & Edmar Lozada
+# ------------------------------
+put "(Hotspot) Loading..."
 
 # === Installer === #
-{ :local eName  "Installer";
-  :local eEvent "# $eName #\r
+{ local eName  "Installer";
+  local eEvent "# $eName #\r
 # ------------------------------\r
 # Installer Startup\r
 # by: Chloe Renae & Edmar Lozada\r
 # ------------------------------\r
-:global install do={
-  :local aInstall do={
-    :put \"(Hotspot) Installing...\";
-    :foreach iFile in=\$1 do={
-      :if ([/file find name=\"\$iFile\"]=\"\") do={ :put \"(Hotspot) ERROR: \$iFile...\";
+global reset do={
+  if (\$1=\"config\") do={
+    put \"(Hotspot) Reset Mikrotik No Config...\";
+    do {/file remove \"hotspot\"} on-error={ };
+    do {/file remove \"flash/hotspot\"} on-error={ };
+    /system reset-config no-defaults=yes skip-backup=yes run-after-reset=userpass.rsc
+  } else={ put \"(Hotspot) ERROR: invalid argument!\" }
+}
+global install do={
+  local aInstall do={
+    put \"(Hotspot) Installing...\";
+    foreach iFile in=\$1 do={
+      if ([/file find name=\"\$iFile\"]=\"\") do={ put \"(Hotspot) ERROR: \$iFile...\";
       } else={
-        :put \"(Hotspot) Processing (\$iFile)...\";
-        :import \"\$iFile\";
+        put \"(Hotspot) Processing (\$iFile)...\";
+        import \"\$iFile\";
       }
     }
   };
-  :local iInstall do={
-    :if ([/file find name=\"\$1\"]=\"\") do={ :put \"(Hotspot) ERROR: \$1...\"
+  local iInstall do={
+    if ([/file find name=\"\$1\"]=\"\") do={ put \"(Hotspot) ERROR: \$1...\"
     } else={
-      :put \"(Hotspot) Processing (\$1)...\"
-      :import \"\$1\"
+      put \"(Hotspot) Processing (\$1)...\"
+      import \"\$1\"
     }
   };
-  :local aHotspot {\\
-    \"hotspot_rsc/1_config_wan.rsc\";\\
-    \"hotspot_rsc/2_config_advance.rsc\";\\
+  local aHotspot {\\
+    \"hotspot_rsc/1_default_isp.rsc\";\\
+    \"hotspot_rsc/2_default_advance.rsc\";\\
     \"hotspot_rsc/3_hotspot_router.rsc\";\\
     \"hotspot_rsc/4_hotspot_advance.rsc\";\\
     \"hotspot_rsc/5_hotspot_server.rsc\";\\
     \"hotspot_rsc/6_hotspot_ether2.rsc\"
   };
   local iOk true;
-  :if (\$1=\"hotspot\")         do={ :set \$iOk false; \$aInstall \$aHotspot };
-  :if (\$1=\"config_wan\")      do={ :set \$iOk false; \$iInstall \"hotspot_rsc/1_config_wan.rsc\" };
-  :if (\$1=\"config_advance\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/2_config_advance.rsc\" };
-  :if (\$1=\"hotspot_router\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/3_hotspot_router.rsc\" };
-  :if (\$1=\"hotspot_advance\") do={ :set \$iOk false; \$iInstall \"hotspot_rsc/4_hotspot_advance.rsc\" };
-  :if (\$1=\"hotspot_server\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/5_hotspot_server.rsc\" };
-  :if (\$1=\"hotspot_ether2\")  do={ :set \$iOk false; \$iInstall \"hotspot_rsc/6_hotspot_ether2.rsc\" };
-  :if (\$1=\"end\") do={ :set \$iOk false;
-    :do {/file remove \"hotspot_rsc\"} on-error={ };
+  if (\$1=\"hotspot\")         do={ set \$iOk false; \$aInstall \$aHotspot };
+  if (\$1=\"default_isp\")     do={ set \$iOk false; \$iInstall \"hotspot_rsc/1_default_isp.rsc\" };
+  if (\$1=\"default_advance\") do={ set \$iOk false; \$iInstall \"hotspot_rsc/2_default_advance.rsc\" };
+  if (\$1=\"hotspot_router\")  do={ set \$iOk false; \$iInstall \"hotspot_rsc/3_hotspot_router.rsc\" };
+  if (\$1=\"hotspot_advance\") do={ set \$iOk false; \$iInstall \"hotspot_rsc/4_hotspot_advance.rsc\" };
+  if (\$1=\"hotspot_server\")  do={ set \$iOk false; \$iInstall \"hotspot_rsc/5_hotspot_server.rsc\" };
+  if (\$1=\"hotspot_ether2\")  do={ set \$iOk false; \$iInstall \"hotspot_rsc/6_hotspot_ether2.rsc\" };
+  if (\$1=\"pppoe_client\")    do={ set \$iOk false; \$iInstall \"hotspot_rsc/config_pppoe_c.rsc\" };
+  if (\$1=\"pppoe_server\")    do={ set \$iOk false; \$iInstall \"hotspot_rsc/config_pppoe_s.rsc\" };
+  if (\$1=\"end\") do={ set \$iOk false;
+    do {/file remove \"hotspot_rsc\"} on-error={ };
 
-    :do {/file remove \"installer\"} on-error={ };
-    :do {/file remove \"source_rsc\"} on-error={ };
-    :do {/file remove \"About\"} on-error={ };
-    :do {/file remove \"LICENSE\"} on-error={ };
-    :do {/file remove \"README.md\"} on-error={ };
-    :do {/file remove \"0_start_here.rsc\"} on-error={ };
-    :do {/system scheduler remove [find name=Installer]} on-error={ };
-    :do {/system script environment remove [find name=install]} on-error={ };
+    do {/file remove \"installer\"} on-error={ };
+    do {/file remove \"source_rsc\"} on-error={ };
+    do {/file remove \"userpass.rsc\"} on-error={ };
+    do {/file remove \"About\"} on-error={ };
+    do {/file remove \"LICENSE\"} on-error={ };
+    do {/file remove \"README.md\"} on-error={ };
+    do {/file remove \"config.txt\"} on-error={ };
+    do {/system scheduler remove [find name=Installer]} on-error={ };
+    do {/system script environment remove [find name=install]} on-error={ };
   };
-  :if (\$iOk) do={ :put \"(Hotspot) ERROR: invalid argument!\" };
+  if (\$iOk) do={ put \"(Hotspot) ERROR: invalid argument!\" };
 }\r
 # ------------------------------\r\n"
-:if ([/system scheduler find name=$eName]="") do={ /system scheduler add name=$eName }
+if ([/system scheduler find name=$eName]="") do={ /system scheduler add name=$eName }
 /system scheduler  set [find name=$eName] on-event=$eEvent \
  disabled=no start-time=startup interval=0s comment="installer_scheduler: ( Startup )"
-:put "(Hotspot) /system script => name=[$eName]";
+put "(Hotspot) /system script => name=[$eName]";
 }
-:local i 9;:while (($i>0) and ([/system scheduler find name=Installer]="")) do={:set i ($i-1);:delay 1s};
-[:parse [/system scheduler get [find name=Installer] on-event]]
-:put "(Hotspot) end...";
-:import "0_start_here.rsc";
+local i 9;while (($i>0) and ([/system scheduler find name=Installer]="")) do={set i ($i-1);delay 1s};
+[parse [/system scheduler get [find name=Installer] on-event]]
+import "config.txt";

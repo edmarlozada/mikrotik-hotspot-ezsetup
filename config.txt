@@ -1,0 +1,78 @@
+# ==============================
+# Beginners easy hotspot setup/config
+# script for your mikrotik
+# with just simple commands.
+# Author:
+# - Chloe Renae & Edmar Lozada
+# - Gcash (0909-3887889)
+# Facebook Contact:
+# - https://www.facebook.com/chloe.renae.9
+# Before you begin:
+# - Port 1 ( WAN )
+# - Port 2 ( PC/Laptop Winbox )
+# - reset mt w/o default config
+# How to install:
+# 1. Edit file "config.txt".
+# 2. Provide the needed information.
+# 3. Save this file after editing
+# 4. Drag and Drop all files to winbox terminal
+# 5. Execute each command on winbox terminal:
+#    :import installer
+#    $install hotspot
+#    $install end
+# 6. Reboot mikrotik!
+# ------------------------------
+/{put "(Config) Processing Config File...";
+
+### Internet Service Provider [Globe/Smart/PLDT/Starlink/etc].
+local ISPName    "PLDT"
+### IP subnet of LAN "192.168.x.0" & Hotspot "10.0.x.0".
+local IPSubNet   "6"
+
+# === mikrotik winbox username/password ===
+local WinboxUser "winbox_admin"
+local WinboxPass "admin"
+local AdminUser  "admin"
+local AdminPass  "admin"
+local AdminOff   "yes"
+
+# === mikrotik wifi (if available) ===
+### mikrotik wifi SSID. Edit value below to change.
+local WiFiSSID   "SecureWiFi"
+### mikrotik wifi password. Edit value below to change.
+local WiFiPass   "securewifi"
+
+
+# ------------------------------
+# Do not edit below this point!
+# ------------------------------
+{ local eName "cfg-hotspot";
+  local eSource "# $eName #\r
+# ------------------------------\r
+# Init/Setup/Config/Installer\r
+# by: Chloe Renae & Edmar Lozada\r
+# ------------------------------\r
+local config {\r
+ \"ISPName\"=\"$ISPName\";\r
+ \"IPSubNet\"=\"$IPSubNet\";\r
+ \"WinboxUser\"=\"$WinboxUser\";\r
+ \"WinboxPass\"=\"$WinboxPass\";\r
+ \"AdminUser\"=\"$AdminUser\";\r
+ \"AdminPass\"=\"$AdminPass\";\r
+ \"AdminOff\"=\"$AdminOff\";\r
+ \"WiFiSSID\"=\"$WiFiSSID\";\r
+ \"WiFiPass\"=\"$WiFiPass\";\r
+ \"QueueType\"=\"sfq-queue\";\r
+ \"QueueTurb\"=8;\r
+ \"BridgeHS\"=\"bridge-hotspot\"
+ \"BridgeIP\"=\"bridge-isp1\"
+ \"edmarlozada\"=\"edmarlozada\"
+}\r
+return \$config\r\n";
+# ------------------------------
+if ([/system script find name="$eName"]="") do={ /system script add name="$eName" }
+/system script set [find name="$eName"] source=$eSource owner=$eName comment="( $eName )"
+put "(Config) /system script => name=[$eName]";
+}
+# ------------------------------
+}

@@ -2,40 +2,36 @@
 # Miktrotik Config HotSpot Server
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "(HotSpot) Miktrotik Config HotSpot Server";
-
-:local cfg [[:parse [/system script get "cfg-hotspot" source]]];
+/{put "(HotSpot) Miktrotik Config HotSpot Server";
+local cfg [[parse [/system script get "cfg-hotspot" source]]];
 
 # --- [ HotSpot ] --- #
-:local HSUPName  ($cfg->"HSUPName");
-:local BridgeHS  ($cfg->"BridgeHS");
-:local HSGateway ([pic [/ip address get [find interface=$BridgeHS] address] 0 [find [/ip address get [find interface=$BridgeHS] address] "/"]]);
-:local HPoolName ([/ip dhcp-server get [find interface=$BridgeHS] address-pool]);
+local iBrName  ($cfg->"BridgeHS")
 
-# --- [ TIME ] --- #
-:local LoginTimeout 5m;
-:local IdleTimeout none;
-:local KeepAliveTimeout none;
 
 # ==============================
 # Hotspot Profile
 # ------------------------------
-:if ([/ip hotspot profile find name=default]!="") do={
-     /ip hotspot profile set [find name=default] name=$HSUPName }
+local HSUPName  ("hsProfile".($cfg->"IPSubNet"))
+local HSGateway ("10.0.$($cfg->"IPSubNet").1")
+if ([/ip hotspot profile find name=$HSUPName]="") do={
+     /ip hotspot profile  add name=$HSUPName}
 /ip hotspot profile set [find name=$HSUPName] \
-    name=$HSUPName \
     hotspot-address=$HSGateway \
     login-by=http-chap,cookie \
     http-cookie-lifetime=31d
-:put "(HS Profile) /ip hotspot profile => name:[$HSUPName] hotspot-address:[$HSGateway]"
+put "(HS Profile) /ip hotspot profile => name=[$HSUPName] hotspot-address=[$HSGateway]"
 
 # ==============================
 # Hotspot Server
 # ------------------------------
-local HSServer ($cfg->"HSServer")
-:if ([/ip hotspot find interface=$BridgeHS]="") do={
-     /ip hotspot add interface=$BridgeHS name=$HSServer }
-/ip hotspot set [find interface=$BridgeHS] \
+local LoginTimeout 5m;
+local IdleTimeout none;
+local KeepAliveTimeout none;
+local HSServer ("hsServer".($cfg->"IPSubNet"))
+if ([/ip hotspot find interface=$iBrName]="") do={
+     /ip hotspot  add interface=$iBrName name=$HSServer }
+/ip hotspot set [find interface=$iBrName] \
     name=$HSServer \
     profile=$HSUPName \
     addresses-per-mac=1 \
@@ -43,39 +39,47 @@ local HSServer ($cfg->"HSServer")
     login-timeout=$LoginTimeout \
     keepalive-timeout=$KeepAliveTimeout \
     disabled=no
-:put "(HS Server) /ip hotspot => name:[$HSServer] interface:[$BridgeHS] profile:[$HSUPName]"
+put "(HS Server) /ip hotspot => name=[$HSServer] interface=[$iBrName] profile=[$HSUPName]"
 
 # ==============================
-# Queue Simple hotspot-default (sfq)
+# Queue SFQ
 # ------------------------------
-:local HSQueue  ($cfg->"HSQueue")
-:local BridgeHS ($cfg->"BridgeHS")
-:foreach x in=[/queue simple find target=$BridgeHS] do={ /queue simple remove $x }
-/queue simple add name=$HSQueue target=$BridgeHS queue="$($cfg->"QueueType")/$($cfg->"QueueType")"
-/queue simple move [find name=$HSQueue] 0
-/queue simple set [ find name=$HSQueue ] target=$BridgeHS \
-  queue="$($cfg->"QueueType")/$($cfg->"QueueType")" \
+local iQueueType ($cfg->"QueueType")
+if ([/queue type find name=$iQueueType]="") do={
+     /queue type  add name=$iQueueType  kind=sfq sfq-perturb=($cfg->"QueueTurb")}
+/queue type set [find name=$iQueueType] kind=sfq sfq-perturb=($cfg->"QueueTurb")
+put "(Queue Type) /queue type => name:[$iQueueType] kind:[sfq] sfq-perturb:[$($cfg->"QueueTurb")]"
+
+# ==============================
+# Queue Simple hotspot-default
+# ------------------------------
+local iQueue  ("q_$iBrName")
+if ([/queue simple find name=$iQueue]="") do={
+     /queue simple  add name=$iQueue  target=$iBrName queue="$iQueueType/$iQueueType" }
+/queue simple set [find name=$iQueue] target=$iBrName \
+  queue="$iQueueType/$iQueueType" \
   disabled=no
   # max-limit=50M/50M \
-:put "(HS Queue Simple) /queue simple => name:[$HSQueue] target:[$BridgeHS] queue-type:[$($cfg->"QueueType")]"
+/queue simple move [find name=$iQueue] 0
+put "(HS Queue Simple) /queue simple => name=[$iQueue] target=[$iBrName] queue-type=[$iQueueType]"
 
 # ==============================
 # Hotspot User Profile (default)
 # ------------------------------
-:local HSUPRate "512k/512k"
+local HSUPRate "512k/512k"
 /ip hotspot user profile set [find default=yes] \
     !idle-timeout \
     !keepalive-timeout \
     rate-limit=$HSUPRate \
     shared-users=1 \
-    parent-queue=($cfg->"HSQueue") \
+    parent-queue=$iQueue \
     queue-type=hotspot-default \
     mac-cookie-timeout=1d
 /ip hotspot user profile set [find default=yes] add-mac-cookie=no
 /ip hotspot user profile set [find default=yes] on-login="# hsup_login (hsup-Default) #\r\nlog info (\"(hsup-Default) onLogin [ \$user ] [ \$\"mac-address\" ] [ \$address ]\")\r\n"
 /ip hotspot user profile set [find default=yes] on-logout="# hsup_login (hsup-Default) #\r\nlog info (\"(hsup-Default) onLogout [ \$user ] [ \$\"mac-address\" ] [ \$address ]\")\r\n"
-:put "(HS User Profile) /ip hotspot user profile => name:[default] [$HSUPRate] [$($cfg->"HSQueue")]"
+put "(HS User Profile) /ip hotspot user profile => name=[default] rate-limit=[$HSUPRate] parent-queue=[$iQueue]"
 
 # ------------------------------
-:put "(5_hotspot_server.rsc) end...";
+put "(5_hotspot_server.rsc) end...";
 }

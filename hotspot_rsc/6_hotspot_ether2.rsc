@@ -2,22 +2,31 @@
 # Miktrotik HotSpot Router (ether2)
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{:put "(HotSpot) Miktrotik HotSpot Router (ether2)";
+/{put "(HotSpot) Miktrotik HotSpot Router (ether2)";
+local cfg [[parse [/system script get "cfg-hotspot" source]]]
 
-:local cfg [[:parse [/system script get "cfg-hotspot" source]]]
+local iBrName  ($cfg->"BridgeHS")
+local iBrNote  "bridge ( Hotspot )"
+local iEthNote "ether2 ( HotSpot-2 )"
 
-:local BridgeHS ($cfg->"BridgeHS");
-:local ether ether2;
-:local iNote ("$ether ( LAN-HS-2 )");
-/interface set [find default-name=$ether] name=$ether comment=$iNote disabled=no;
-:put "(Config HS) /interface => name=[$ether] comment=[$iNote]";
-:if ([/interface bridge port find interface=$ether]="") do={
-      /interface bridge port  add interface=$ether  bridge=$BridgeHS };
-/interface bridge  port set [find interface=$ether] bridge=$BridgeHS comment=$iNote;
-:put "(Config HS) /interface bridge port => name=[$ether] bridge=[$BridgeHS] comment=[$iNote]";
+
+# ==============================
+# Interface / Bridge Port (ether2)
+# ------------------------------
+if ([/interface find default-name=ether2]!="") do={
+  local ethName [/interface get [find default-name=ether2] name];
+  /interface set [find name=$ethName] comment=$iEthNote disabled=no
+  put "(Config WAN) /interface => name=[$ethName] comment=[$iEthNote]"
+  if ([/interface bridge port find interface=$ethName]="") do={
+       /interface bridge port  add interface=$ethName  bridge=$iBrName
+       put "(Config WAN) /interface bridge port add => name=[$ethName] bridge=[$iBrName] comment=[$iEthNote]" }
+  /interface bridge port set [find interface=$ethName] bridge=$iBrName comment=$iEthNote
+  put "(Config WAN) /interface bridge port => name=[$ethName] bridge=[$iBrName] comment=[$iEthNote]"
+}
+
 
 # ------------------------------
-:put "(6_hotspot_ether2.rsc) end...";
-:put "Finishing Up. Wait..."
-:delay 10s
+put "(6_hotspot_ether2.rsc) end...";
+put "Finishing Up. Wait..."
+delay 10s
 }
