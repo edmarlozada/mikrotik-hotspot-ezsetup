@@ -2,10 +2,10 @@
 # Miktrotik HotSpot Router
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{put "(Config HS) Miktrotik HotSpot Router";
+/{put "(Config LAN) Miktrotik HotSpot Router";
 local cfg [[parse [/system script get "cfg-hotspot" source]]]
 
-# --- [ Subnet HS ] --- #
+# --- [ Subnet LAN ] --- #
 local iIP1st "10"
 local iIP2nd "0"
 local iIP3rd ($cfg->"IPSubNet")
@@ -13,7 +13,7 @@ local iIPBEG "50"
 local iIPEND "249"
 local iIPNET "$iIP1st.$iIP2nd.$iIP3rd"
 
-# --- [ Bridge HS ] --- #
+# --- [ Bridge LAN ] --- #
 local iBrName ($cfg->"BridgeHS")
 local iBrNote "bridge ( Hotspot )"
 
@@ -24,22 +24,22 @@ local iBrNote "bridge ( Hotspot )"
 if ([/interface bridge find name=$iBrName]="") do={
      /interface bridge  add name=$iBrName}
 /interface bridge set [find name=$iBrName] comment=$iBrNote disabled=no
-put "(Config HS) /interface bridge => name=[$iBrName] comment=[$iBrNote]"
+put "(Config LAN) /interface bridge => name=[$iBrName] comment=[$iBrNote]"
 
 # ==============================
 # Interface List
 # ------------------------------
 if ([/interface list find name=LAN]="") do={
      /interface list  add name=LAN}
-put "(Config HS) /interface list (LAN)"
+put "(Config LAN) /interface list (LAN)"
 
 if ([/interface list member find interface=$iBrName]="") do={
      /interface list member  add interface=$iBrName  list=LAN }
 /interface list member set [find interface=$iBrName] list=LAN comment=$iBrNote
-put "(Config HS) /interface list member => list=[LAN] interface=[$iBrName] comment=[$iBrNote]"
+put "(Config LAN) /interface list member => list=[LAN] interface=[$iBrName] comment=[$iBrNote]"
 
 # ==============================
-# Bridge HS IP-Addresses
+# Bridge LAN IP-Addresses
 # ------------------------------
 local iNetwork  "$iIPNET.0"
 local iAddress  "$iIPNET.1/24"
@@ -49,7 +49,7 @@ if ([/ip address find interface=$iBrName]="") do={
     address=$iAddress \
     network=$iNetwork \
     comment=$iBrNote
-put "(Config HS) /ip address => address=[$iAddress] network=[$iNetwork] interface=[$iBrName]"
+put "(Config LAN) /ip address => address=[$iAddress] network=[$iNetwork] interface=[$iBrName]"
 
 # ==============================
 # DHCP Server
@@ -60,7 +60,7 @@ local iPoolAddr "$iIPNET.$iIPBEG-$iIPNET.$iIPEND"
 if ([/ip pool find name=$iPoolName]="") do={
      /ip pool  add name=$iPoolName  ranges=$iPoolAddr }
 /ip pool set [find name=$iPoolName] ranges=$iPoolAddr comment="$iBrName ( Pool )"
-put "(Config HS) /ip pool => name=[$iPoolName] ranges=[$iPoolAddr]"
+put "(Config LAN) /ip pool => name=[$iPoolName] ranges=[$iPoolAddr]"
 
 if ([/ip dhcp-server find interface=$iBrName]="") do={
      /ip dhcp-server  add interface=$iBrName name=$iDHCPServ }
@@ -70,7 +70,7 @@ if ([/ip dhcp-server find interface=$iBrName]="") do={
     insert-queue-before=bottom \
     lease-time=1d \
     disabled=no
-put "(Config HS) /ip dhcp-server => name=[$iDHCPServ] interface=[$iBrName] pool=[$iPoolName]"
+put "(Config LAN) /ip dhcp-server => name=[$iDHCPServ] interface=[$iBrName] pool=[$iPoolName]"
 
 local iGateway  "$iIPNET.1"
 local iNetwork  "$iIPNET.0/24"
@@ -79,14 +79,14 @@ if ([/ip dhcp-server network find address=$iNetwork]="") do={
 /ip dhcp-server network set [find address=$iNetwork] \
     gateway=$iGateway \
     comment="$iBrName ( Address & Gateway )"
-put "(Config HS) /ip dhcp-server network => address=[$iNetwork] gateway=[$iGateway] dns-server=[$iGateway]"
+put "(Config LAN) /ip dhcp-server network => address=[$iNetwork] gateway=[$iGateway] dns-server=[$iGateway]"
 
 # ==============================
 # DNS Settings
 # ------------------------------
 # /ip dns set servers=(208.67.222.222,8.8.8.8,1.1.1.1)
 /ip dns set allow-remote-requests=yes
-put "(Config HS) /ip dns => allow-remote-requests=[yes]"
+put "(Config LAN) /ip dns => allow-remote-requests=[yes]"
 
 # ==============================
 # Mikrotik Clock (Date & Time)
@@ -94,14 +94,14 @@ put "(Config HS) /ip dns => allow-remote-requests=[yes]"
 # secondary-ntp = 45.86.70.11 ( 0.asia.pool.ntp.org )
 # ------------------------------
 /system clock set time-zone-autodetect=no time-zone-name=Asia/Manila
-put "(Config HS) /system clock => time-zone-autodetect=[no] time-zone-name=[Asia/Manila]"
+put "(Config LAN) /system clock => time-zone-autodetect=[no] time-zone-name=[Asia/Manila]"
 
 /ip cloud set update-time=no
 /system ntp client set enabled=yes \
    primary-ntp=121.58.193.100 \
    secondary-ntp=45.86.70.11 \
    server-dns-names=asia.pool.ntp.org
-put "(Config HS) /system ntp client => primary-ntp=[121.58.193.100] secondary-ntp=[45.86.70.11]"
+put "(Config LAN) /system ntp client => primary-ntp=[121.58.193.100] secondary-ntp=[45.86.70.11]"
 
 /system package update set channel=long-term
 
@@ -117,7 +117,7 @@ if ([/system logging find topics="hotspot;info"]="") do={/system logging add top
 /system logging set [find topics="hotspot;info"] disabled=no
 /system logging action set memory memory-lines=1
 /system logging action set memory memory-lines=1000
-put "(Config HS) /system logging => topics=[script] topics=[hotspot] topics=[hotspot;info]"
+put "(Config LAN) /system logging => topics=[script] topics=[hotspot] topics=[hotspot;info]"
 
 # ==============================
 # User => Name and Password
@@ -127,12 +127,12 @@ local WinboxPass ($cfg->"WinboxPass")
 if ([/user find name=$WinboxUser]="") do={
       /user  add name=$WinboxUser  password=$WinboxPass group=full }
 /user  set [find name=$WinboxUser] password=$WinboxPass group=full comment="Winbox User (Admins)" disabled=no
-put "(Config HS) /user => name=[$WinboxUser]"
+put "(Config LAN) /user => name=[$WinboxUser]"
 
 # Admin User
 /user set [find name=($cfg->"AdminUser")] password=($cfg->"AdminPass")
 /user set [find name="admin"] disabled=($cfg->"AdminOff")
-put "(Config HS) /user => name=[admin] disabled=[$($cfg->"AdminOff")]"
+put "(Config LAN) /user => name=[admin] disabled=[$($cfg->"AdminOff")]"
 
 # ==============================
 # Wireless Profiles
@@ -149,7 +149,7 @@ if ([/interface wireless find default-name=wlan1]!="") do={
     authentication-types=wpa2-psk \
     wpa-pre-shared-key=($cfg->"WiFiPass") \
     wpa2-pre-shared-key=($cfg->"WiFiPass")
-  put "(Config HS) /interface wireless security-profiles => security-profiles=[$WiFiProf] [aes-ccm] [wpa2-psk]"
+  put "(Config LAN) /interface wireless security-profiles => security-profiles=[$WiFiProf] [aes-ccm] [wpa2-psk]"
   /interface wireless set [find default-name=wlan1] \
     mode=ap-bridge \
     wps-mode=disabled \
@@ -158,10 +158,10 @@ if ([/interface wireless find default-name=wlan1]!="") do={
     channel-width=20/40mhz-eC \
     frequency=auto \
     ssid=($cfg->"WiFiSSID") \
-    security-profile=$WiFiProf \
+    security-profile=default \
     default-authentication=yes \
     disabled=yes
-  put "(Config HS) /interface wireless => name=[wlan1] ssid=[$($cfg->"WiFiSSID")]"
+  put "(Config LAN) /interface wireless => name=[wlan1] ssid=[$($cfg->"WiFiSSID")]"
 }
 
 # ==============================
@@ -174,12 +174,12 @@ foreach iRec in=[/interface ethernet find] do={
     local iEthNote ("$ether ( HotSpot-$iCtr )");
     local ethName [/interface get [find default-name=$ether] name];
     /interface set [find name=$ethName] comment=$iEthNote disabled=no
-    put "(Config HS) /interface => name=[$ethName] comment=[$iEthNote]"
+    put "(Config LAN) /interface => name=[$ethName] comment=[$iEthNote]"
     if ([/interface bridge port find interface=$ethName]="") do={
          /interface bridge port  add interface=$ethName  bridge=$iBrName
-         put "(Config HS) /interface bridge port add => name=[$ethName] bridge=[$iBrName] comment=[$iEthNote]" }
+         put "(Config LAN) /interface bridge port add => name=[$ethName] bridge=[$iBrName] comment=[$iEthNote]" }
     /interface bridge port set [find interface=$ethName] bridge=$iBrName comment=$iEthNote
-    put "(Config HS) /interface bridge port => name=[$ethName] bridge=[$iBrName] comment=[$iEthNote]"
+    put "(Config LAN) /interface bridge port => name=[$ethName] bridge=[$iBrName] comment=[$iEthNote]"
   }
 }
 
@@ -187,12 +187,12 @@ if ([/interface wireless find default-name=wlan1]!="") do={
   local wifiNote ("etherw ( HotSpot-WiFi )");
   local ethName [/interface get [find default-name=wlan1] name];
   /interface wireless set [find name=$ethName] comment=$wifiNote;
-  put "(Config HS) /interface wireless => name=[$ethName] comment=[$wifiNote]";
+  put "(Config LAN) /interface wireless => name=[$ethName] comment=[$wifiNote]";
   if ([/interface bridge port find interface=$ethName]="") do={
-       put "(Config HS) /interface bridge port add => name=[$ethName] bridge=[$iBrName] comment=[$wifiNote]"
+       put "(Config LAN) /interface bridge port add => name=[$ethName] bridge=[$iBrName] comment=[$wifiNote]"
        /interface bridge port  add interface=$ethName  bridge=$iBrName };
   /interface bridge port set [find interface=$ethName] bridge=$iBrName comment=$wifiNote;
-  put "(Config HS) /interface bridge port => name=[$ethName] bridge=[$iBrName] comment=[$wifiNote]";
+  put "(Config LAN) /interface bridge port => name=[$ethName] bridge=[$iBrName] comment=[$wifiNote]";
 }
 
 # ------------------------------

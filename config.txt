@@ -25,9 +25,9 @@
 /{put "(Config) Processing Config File...";
 
 ### Internet Service Provider [Globe/Smart/PLDT/Starlink/etc].
-local ISPName    "PLDT"
+local ISPName    "XXXX"
 ### IP subnet of LAN "192.168.x.0" & Hotspot "10.0.x.0".
-local IPSubNet   "6"
+local IPSubNet   "10"
 
 # === mikrotik winbox username/password ===
 local WinboxUser "winbox_admin"
@@ -38,7 +38,7 @@ local AdminOff   "yes"
 
 # === mikrotik wifi (if available) ===
 ### mikrotik wifi SSID. Edit value below to change.
-local WiFiSSID   "SecureWiFi"
+local WiFiSSID   "JuanFi"
 ### mikrotik wifi password. Edit value below to change.
 local WiFiPass   "securewifi"
 

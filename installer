@@ -47,7 +47,7 @@ global install do={
   local iOk true;
   if (\$1=\"hotspot\")         do={ set \$iOk false; \$aInstall \$aHotspot };
   if (\$1=\"default_isp\")     do={ set \$iOk false; \$iInstall \"hotspot_rsc/1_default_isp.rsc\" };
-  if (\$1=\"default_advance\") do={ set \$iOk false; \$iInstall \"hotspot_rsc/2_default_advance.rsc\" };
+  if (\$1=\"default_advance\")  do={ set \$iOk false; \$iInstall \"hotspot_rsc/2_default_advance.rsc\" };
   if (\$1=\"hotspot_router\")  do={ set \$iOk false; \$iInstall \"hotspot_rsc/3_hotspot_router.rsc\" };
   if (\$1=\"hotspot_advance\") do={ set \$iOk false; \$iInstall \"hotspot_rsc/4_hotspot_advance.rsc\" };
   if (\$1=\"hotspot_server\")  do={ set \$iOk false; \$iInstall \"hotspot_rsc/5_hotspot_server.rsc\" };

@@ -10,24 +10,6 @@ local iBrName ($cfg->"BridgeHS");
 
 
 # ==============================
-# Mikrotik Security
-# ------------------------------
-# /ip neighbor discovery-settings set discover-interface-list=LAN
-# /tool mac-server set allowed-interface-list=LAN
-# /tool mac-server mac-winbox set allowed-interface-list=LAN
-# /ip service set www port=81
-# /ip service set www disabled=yes
-/ip service set telnet disabled=yes
-put "(Config) /ip service => telnet=[disabled]"
-
-# ==============================
-# Mikrotik Identity
-# ------------------------------
-local iName ("Mikrotik".($cfg->"IPSubNet"))
-/system identity set name=$iName;
-put "(Config) /system identity set => name=[$iName]"
-
-# ==============================
 # Disable changing IP address of clients
 # ------------------------------
 # if ([/ip dhcp-server find interface=$iBrName]!="") do={
