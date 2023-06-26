@@ -2,8 +2,8 @@
 # Miktrotik Config HotSpot Server
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{put "(HotSpot) Miktrotik Config HotSpot Server";
-local cfg [[parse [/system script get "cfg-hotspot" source]]];
+/{put "(HotSpot) Miktrotik Config HotSpot Server"
+local cfg [[parse [/system script get "cfg-hotspot" source]]]
 
 # --- [ HotSpot ] --- #
 local iBrName  ($cfg->"BridgeHS")
@@ -25,9 +25,9 @@ put "(HS Profile) /ip hotspot profile => name=[$HSUPName] hotspot-address=[$HSGa
 # ==============================
 # Hotspot Server
 # ------------------------------
-local LoginTimeout 5m;
-local IdleTimeout none;
-local KeepAliveTimeout none;
+local LoginTimeout 5m
+local IdleTimeout none
+local KeepAliveTimeout none
 local HSServer ("hsServer".($cfg->"IPSubNet"))
 if ([/ip hotspot find interface=$iBrName]="") do={
      /ip hotspot  add interface=$iBrName name=$HSServer }
@@ -48,7 +48,7 @@ local iQueueType ($cfg->"QueueType")
 if ([/queue type find name=$iQueueType]="") do={
      /queue type  add name=$iQueueType  kind=sfq sfq-perturb=($cfg->"QueueTurb")}
 /queue type set [find name=$iQueueType] kind=sfq sfq-perturb=($cfg->"QueueTurb")
-put "(Queue Type) /queue type => name:[$iQueueType] kind:[sfq] sfq-perturb:[$($cfg->"QueueTurb")]"
+put "(Queue Type) /queue type => name=[$iQueueType] kind=[sfq] sfq-perturb=[$($cfg->"QueueTurb")]"
 
 # ==============================
 # Queue Simple hotspot-default
@@ -81,5 +81,5 @@ local HSUPRate "512k/512k"
 put "(HS User Profile) /ip hotspot user profile => name=[default] rate-limit=[$HSUPRate] parent-queue=[$iQueue]"
 
 # ------------------------------
-put "(5_hotspot_server.rsc) end...";
+put "(5_hotspot_server.rsc) end..."
 }

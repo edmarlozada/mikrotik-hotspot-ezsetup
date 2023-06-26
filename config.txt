@@ -22,7 +22,7 @@
 #    $install end
 # 6. Reboot mikrotik!
 # ------------------------------
-/{put "(Config) Processing Config File...";
+/{put "(Config) Processing Config File..."
 
 ### Internet Service Provider [Globe/Smart/PLDT/Starlink/etc].
 local ISPName    "XXXX"
@@ -46,7 +46,7 @@ local WiFiPass   "securewifi"
 # ------------------------------
 # Do not edit below this point!
 # ------------------------------
-{ local eName "cfg-hotspot";
+{ local eName "cfg-hotspot"
   local eSource "# $eName #\r
 # ------------------------------\r
 # Init/Setup/Config/Installer\r
@@ -68,11 +68,11 @@ local config {\r
  \"BridgeIP\"=\"bridge-isp1\"
  \"edmarlozada\"=\"edmarlozada\"
 }\r
-return \$config\r\n";
+return \$config\r\n"
 # ------------------------------
 if ([/system script find name="$eName"]="") do={ /system script add name="$eName" }
 /system script set [find name="$eName"] source=$eSource owner=$eName comment="( $eName )"
-put "(Config) /system script => name=[$eName]";
+put "(Config) /system script => name=[$eName]"
 }
 # ------------------------------
 }

@@ -2,8 +2,8 @@
 # Miktrotik Internet Provider
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{put "(Config WAN) Miktrotik Internet Provider";
-local cfg [[parse [/system script get "cfg-hotspot" source]]];
+/{put "(Config WAN) Miktrotik Internet Provider"
+local cfg [[parse [/system script get "cfg-hotspot" source]]]
 
 local iBrName  "bridge-isp1"
 local iBrNote  "bridge ( ISP1 )"
@@ -39,7 +39,7 @@ put "(Config WAN) /interface list member => list=[WAN] interface=[ether1] commen
 # Interface / Bridge Port (ISP)
 # ------------------------------
 if ([/interface find default-name=ether1]!="") do={
-  local ethName [/interface get [find default-name=ether1] name];
+  local ethName [/interface get [find default-name=ether1] name]
   /interface set [find name=$ethName] comment=$iEthNote disabled=no
   put "(Config WAN) /interface => name=[$ethName] comment=[$iEthNote]"
   if ([/interface bridge port find interface=$ethName]="") do={
@@ -66,5 +66,5 @@ if ([/ip firewall nat find chain=srcnat action=masquerade out-interface-list="WA
 put "(Config WAN) /ip firewall nat => chain=[srcnat] action=[masquerade] out-interface-list=[WAN]"
 
 # ------------------------------
-put "(1_default_isp.rsc) end...";
+put "(1_default_isp.rsc) end..."
 }

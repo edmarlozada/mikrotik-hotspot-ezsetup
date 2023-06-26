@@ -2,7 +2,7 @@
 # Miktrotik HotSpot Router
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{put "(Config LAN) Miktrotik HotSpot Router";
+/{put "(Config LAN) Miktrotik HotSpot Router"
 local cfg [[parse [/system script get "cfg-hotspot" source]]]
 
 # --- [ Subnet LAN ] --- #
@@ -158,7 +158,7 @@ if ([/interface wireless find default-name=wlan1]!="") do={
     channel-width=20/40mhz-eC \
     frequency=auto \
     ssid=($cfg->"WiFiSSID") \
-    security-profile=default \
+    security-profile=$WiFiProf \
     default-authentication=yes \
     disabled=yes
   put "(Config LAN) /interface wireless => name=[wlan1] ssid=[$($cfg->"WiFiSSID")]"
@@ -168,11 +168,11 @@ if ([/interface wireless find default-name=wlan1]!="") do={
 # Interface / Bridge Port
 # ------------------------------
 foreach iRec in=[/interface ethernet find] do={
-  local ether [/interface get $iRec default-name];
+  local ether [/interface get $iRec default-name]
   if (($ether!="ether1") and ($ether!="ether2")) do={
-    local iCtr  [pick $ether 5 [len $ether]];
-    local iEthNote ("$ether ( HotSpot-$iCtr )");
-    local ethName [/interface get [find default-name=$ether] name];
+    local iCtr  [pick $ether 5 [len $ether]]
+    local iEthNote ("$ether ( HotSpot-$iCtr )")
+    local ethName [/interface get [find default-name=$ether] name]
     /interface set [find name=$ethName] comment=$iEthNote disabled=no
     put "(Config LAN) /interface => name=[$ethName] comment=[$iEthNote]"
     if ([/interface bridge port find interface=$ethName]="") do={
@@ -184,17 +184,17 @@ foreach iRec in=[/interface ethernet find] do={
 }
 
 if ([/interface wireless find default-name=wlan1]!="") do={
-  local wifiNote ("etherw ( HotSpot-WiFi )");
-  local ethName [/interface get [find default-name=wlan1] name];
-  /interface wireless set [find name=$ethName] comment=$wifiNote;
-  put "(Config LAN) /interface wireless => name=[$ethName] comment=[$wifiNote]";
+  local wifiNote ("etherw ( HotSpot-WiFi )")
+  local ethName [/interface get [find default-name=wlan1] name]
+  /interface wireless set [find name=$ethName] comment=$wifiNote
+  put "(Config LAN) /interface wireless => name=[$ethName] comment=[$wifiNote]"
   if ([/interface bridge port find interface=$ethName]="") do={
        put "(Config LAN) /interface bridge port add => name=[$ethName] bridge=[$iBrName] comment=[$wifiNote]"
-       /interface bridge port  add interface=$ethName  bridge=$iBrName };
-  /interface bridge port set [find interface=$ethName] bridge=$iBrName comment=$wifiNote;
-  put "(Config LAN) /interface bridge port => name=[$ethName] bridge=[$iBrName] comment=[$wifiNote]";
+       /interface bridge port  add interface=$ethName  bridge=$iBrName }
+  /interface bridge port set [find interface=$ethName] bridge=$iBrName comment=$wifiNote
+  put "(Config LAN) /interface bridge port => name=[$ethName] bridge=[$iBrName] comment=[$wifiNote]"
 }
 
 # ------------------------------
-put "(3_hotspot_router.rsc) end...";
+put "(3_hotspot_router.rsc) end..."
 }

@@ -2,11 +2,11 @@
 # Miktrotik Config Default Advance
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{put "(Config Advance) Miktrotik Config Default Advance";
-local cfg [[parse [/system script get "cfg-hotspot" source]]];
+/{put "(Config Advance) Miktrotik Config Default Advance"
+local cfg [[parse [/system script get "cfg-hotspot" source]]]
 
 # --- [ Default ] --- #
-local iBrName ($cfg->"BridgeHS");
+local iBrName ($cfg->"BridgeHS")
 
 
 # ==============================
@@ -24,7 +24,7 @@ put "(Config Advance) /ip service => telnet=[disabled]"
 # Mikrotik Identity
 # ------------------------------
 local iName ("Mikrotik".($cfg->"IPSubNet"))
-/system identity set name=$iName;
+/system identity set name=$iName
 put "(Config Advance) /system identity set => name=[$iName]"
 
 # ==============================
@@ -39,9 +39,9 @@ put "(Config Advance) /system identity set => name=[$iName]"
 # ==============================
 # Anti Tethering
 # ------------------------------
-# /ip firewall mangle add chain=postrouting action=change-ttl new-ttl=set:1 out-interface=$iBrName passthrough=no;
-# put "(HS Advance) Anti Tethering";
+# /ip firewall mangle add chain=postrouting action=change-ttl new-ttl=set:1 out-interface=$iBrName passthrough=no
+# put "(HS Advance) Anti Tethering"
 
 # ------------------------------
-put "(default_advance.rsc) end...";
+put "(default_advance.rsc) end..."
 }

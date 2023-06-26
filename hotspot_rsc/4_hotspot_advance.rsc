@@ -2,11 +2,11 @@
 # Miktrotik Config HotSpot Advance
 # by: Chloe Renae & Edmar Lozada
 # ==============================
-/{put "(HotSpot) Miktrotik Config HotSpot Advance";
-local cfg [[parse [/system script get "cfg-hotspot" source]]];
+/{put "(HotSpot) Miktrotik Config HotSpot Advance"
+local cfg [[parse [/system script get "cfg-hotspot" source]]]
 
 # --- [ HotSpot ] --- #
-local iBrName ($cfg->"BridgeHS");
+local iBrName ($cfg->"BridgeHS")
 
 
 # ==============================
@@ -21,9 +21,9 @@ local iBrName ($cfg->"BridgeHS");
 # ==============================
 # Anti Tethering
 # ------------------------------
-# /ip firewall mangle add chain=postrouting action=change-ttl new-ttl=set:1 out-interface=$iBrName passthrough=no;
-# put "(HS Advance) Anti Tethering";
+# /ip firewall mangle add chain=postrouting action=change-ttl new-ttl=set:1 out-interface=$iBrName passthrough=no
+# put "(HS Advance) Anti Tethering"
 
 # ------------------------------
-put "(4_hotspot_advance.rsc) end...";
+put "(4_hotspot_advance.rsc) end..."
 }
