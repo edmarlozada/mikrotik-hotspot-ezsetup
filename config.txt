@@ -34,11 +34,11 @@ local WinboxUser "winbox_admin"
 local WinboxPass "admin"
 local AdminUser  "admin"
 local AdminPass  "admin"
-local AdminOff   "yes"
+local AdminOff   "no"
 
 # === mikrotik wifi (if available) ===
 ### mikrotik wifi SSID. Edit value below to change.
-local WiFiSSID   "JuanFi"
+local WiFiSSID   "SecureWiFi"
 ### mikrotik wifi password. Edit value below to change.
 local WiFiPass   "securewifi"
 

@@ -20,26 +20,26 @@ How to install:
    - $install hotspot_server
    - $install hotspot_ether2
    - $install end
-   or Install all in 3 command:
+6. or Install all in 3 command:
    - :import installer
    - $install hotspot
    - $install end
-6. Reset Mikrotik no config: (optional)
+7. Execute command to Reset Mikrotik no config: (optional)
    name: admin / password: admin
    - :import installer
    - $reset config
-7. Reboot mikrotik!
+8. Reboot mikrotik!
 
 Provide the needed information:
-- ISPName    [Globe/Smart/PLDT/Starlink/etc]
-- IPSubNet   (IP subnet of LAN "192.168.x.0" & Hotspot "10.0.x.0")
-- WinboxUser (winbox username)
-- WinboxPass (winbox password)
-- AdminUser  (admin username)
-- AdminPass  (admin password)
-- AdminOff   ["no"/"yes"]
-- WiFiSSID   (mikrotik wifi SSID if available)
-- WiFiPass   (mikrotik wifi password if available)
+- ISPName    = ISP Name [Globe/Smart/PLDT/Starlink/etc]
+- IPSubNet   = IP subnet of LAN (192.168.x.0" & Hotspot "10.0.x.0)
+- WinboxUser = winbox username (default "winbox_admin")
+- WinboxPass = winbox password (default "admin")
+- AdminUser  = admin username (default "admin")
+- AdminPass  = admin password (default "admin")
+- AdminOff   = disable admin ["NO"/"yes"]
+- WiFiSSID   = mikrotik wifi SSID if available (default "SecureWiFi")
+- WiFiPass   = mikrotik wifi password if available (default "securewifi"
 
 Author:
 - Chloe Renae & Edmar Lozada
